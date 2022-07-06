@@ -1,0 +1,23 @@
+.cardcon{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    height: 60px;
+}
+/* .card{
+    height: 500px;
+} */
+.cardcon{
+    height: 50%;
+    overflow: auto;
+}
+.details{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
