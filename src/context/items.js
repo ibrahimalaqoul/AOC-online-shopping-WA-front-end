@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import axios from 'axios';
 import cookie from 'react-cookies';
 
@@ -11,23 +11,28 @@ export default function Items(props) {
     const [items, setItems] = useState([])
     const [oneItem, setOneItem] = useState({})
     const [favoriteItems, setFavoriteItems] = useState([])
-    
-    
+    const [show, setShow] = useState(false);
+    // const [popShow, setPopShow] = useState(true);
+
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
+
     useEffect(() => {
         getAllItems();
-        console.log(1111111,items);
-        console.log(333333,favoriteItems);
-    }, [])
-    const addItem = async (itemName, itemImg,itemDescreption,itemPrice) => {
+        console.log(1111111, items);
+        console.log(333333, favoriteItems);
+    }, [favoriteItems])
+    const addItem = async (itemName, itemImg, itemDescreption, itemPrice) => {
         axios.post(`${api}/addItem/${cookie.load('id')}`, {
             itemName: itemName,
             itemImg: itemImg,
             itemDescreption: itemDescreption,
             itemPrice: itemPrice
-        },{
+        }, {
             headers: { 'Authorization': `Bearer ${cookie.load('token')}` }
         }).then((response) => {
-            setItems([...items,response.data])            
+            setItems([...items, response.data])
         }).catch((error) => {
             console.log(error)
         })
@@ -43,38 +48,42 @@ export default function Items(props) {
         })
     }
 
-    const  getItemById = async (id) => {
-        axios.get(`${api}/items/${id}`,{
+    const getItemById = async (id) => {
+        axios.get(`${api}/items/${id}`, {
             headers: { 'Authorization': `Bearer ${cookie.load('token')}` }
-        } ).then((res)=>{
+        }).then((res) => {
             console.log(res.data)
             setOneItem(res.data)
         })
     }
     const updateItem = async (id, itemName, itemImg, itemDescreption, itemPrice) => {
-        axios.put(`${api}/updateItem/${id}`,{
+        axios.put(`${api}/updateItem/${id}`, {
             itemName: itemName,
             itemImg: itemImg,
             itemDescreption: itemDescreption,
             itemPrice: itemPrice
 
-        },{
+        }, {
             headers: { 'Authorization': `Bearer ${cookie.load('token')}` }
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res.data)
-           setItems([...items,res.data])
+            setItems([...items, res.data])
         })
     }
     const deleteItem = async (id) => {
-        axios.delete(`${api}/deleteItem/${id}`,{
+        axios.delete(`${api}/deleteItem/${id}`, {
             headers: { 'Authorization': `Bearer ${cookie.load('token')}` }
-        }).then((res)=>{
+        }).then((res) => {
             console.log(res.data)
             // setDeletedItem(res.data)
             setItems(items.filter(item => item.id !== id))
         })
+
     }
-    const state={
+    const deleteFromFavorite = (id) => {
+        setFavoriteItems(favoriteItems.filter(item => item.id !== id))
+    }
+    const state = {
         items,
         addItem,
         getAllItems,
@@ -82,10 +91,16 @@ export default function Items(props) {
         updateItem,
         deleteItem,
         favoriteItems,
-        setFavoriteItems
+        setFavoriteItems,
+        deleteFromFavorite,
+        show,
+        setShow,
+        handleClose,
+        handleShow,
+        oneItem,
 
     }
-    return(
+    return (
         <ItemContext.Provider value={state}>
             {props.children}
         </ItemContext.Provider>

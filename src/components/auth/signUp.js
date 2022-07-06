@@ -20,6 +20,7 @@ export default function SignUp(){
         auth.signUp(email,password,userName,firstName,lastName)
     }
 return(
+    <div className="form-signup">
     <div class="form signup">
     <span class="title">Registration</span>
 
@@ -71,16 +72,19 @@ setTimeout(()=>{
     navigate('/')
 
 },2000)
-            }} />
+            }} style={
+                {backgroundColor:'#FBB454'}
+            } />
         </div>
     </form>
 
     <div class="login-signup">
         <span class="text">Already a member?
             {/* <a href="#" class="text login-link">Login Now</a> */}
-            <Link to="/" class="text login-link">Login Now</Link>
+            <Link to="/" class="text login-link" style={{color:"white"}}>Login Now</Link>
         </span>
     </div>
+</div>
 </div>
 )
 }

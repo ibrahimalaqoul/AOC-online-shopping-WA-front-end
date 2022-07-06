@@ -8,14 +8,23 @@
     font-family: 'Poppins', sans-serif;
 }
 
-body{
+/* body{
+} */
+.form-signup{
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #4070f4; 
+}
+.form-signin{
     height: 100vh;
     display: flex;
     align-items: center;
     justify-content: center;
     background-color: #4070f4;
-}
 
+}
 .container{
     position: relative;
     max-width: 430px;
