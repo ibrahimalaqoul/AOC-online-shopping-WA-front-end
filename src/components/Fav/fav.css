@@ -1,3 +1,8 @@
+.favclass{
+display: flex;
+flex-wrap: wrap;
+gap: 24px;
+}
 .cardcon{
     display: flex;
     justify-content: center;
@@ -12,6 +17,7 @@
 .cardcon{
     height: 50%;
     overflow: auto;
+
 }
 .details{
     display: flex;
@@ -20,21 +26,4 @@
     align-items: center;
     height: 100%;
     width: 100%;
-}
-.butttonnnsss{
-    display: flex;
-    gap: 24px;
-    /* align-items: center; */
-    height: 100%;
-    width: 100%;
-}
-.pop-up-class{
-    display: flex !important; 
-    flex-direction: column !important;
-    justify-content: center !important;
-    align-items: center !important;
-    height: 100% !important;
-    width: 500px !important;
-
-
 }

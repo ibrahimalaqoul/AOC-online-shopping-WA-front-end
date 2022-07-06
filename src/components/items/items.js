@@ -1,24 +1,30 @@
 import { ItemContext } from "../../context/items";
+import { FavContext } from "../../context/fav";
+import { CartContext } from "../../context/Cart";
 import { useContext, useState, useEffect } from "react";
 import Button from 'react-bootstrap/Button';
-import { Card, ListGroup, ListGroupItem } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 import { Modal } from "react-bootstrap";
-import { Form, Row, Col, FormGroup, Label, Input,Alert } from "reactstrap";
-import{When} from "react-if";
+import { Form, Row, Col, FormGroup, Label, Input } from "reactstrap";
+import { When } from "react-if";
 import cookie from 'react-cookies';
-import'./items.css'
+import './items.css'
 import { Link } from "react-router-dom";
 import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
+// import 'reactjs-popup/dist/index.css';
+import { CommentContext } from "../../context/comment";
 
 
 export default function Items(props) {
     const itemscon = useContext(ItemContext);
-    const [show, setShow] = useState(false);
-    // const [popShow, setPopShow] = useState(true);
+    const favcon = useContext(FavContext);
+    const cartcon = useContext(CartContext);
+    const commentcon = useContext(CommentContext);
+    // const [show, setShow] = useState(false);
+    // // const [popShow, setPopShow] = useState(true);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    // const handleClose = () => setShow(false);
+    // const handleShow = () => setShow(true);
     const [itemName, setItemName] = useState("");
     const [itemImg, setItemImg] = useState("");
     const [itemDescreption, setItemDescreption] = useState("");
@@ -26,7 +32,10 @@ export default function Items(props) {
     const handelSubmit = (e) => {
         e.preventDefault();
         itemscon.addItem(itemName, itemImg, itemDescreption, itemPrice);
-        setShow(false);
+        itemscon.setShow(false);
+
+        window.location.reload();
+
     }
     // const handelFave = (e) => {
     //     p.preventDefault();
@@ -34,96 +43,118 @@ export default function Items(props) {
     // }
     useEffect(() => {
         console.log(22222, itemscon)
+        commentcon.getComments();
 
     }, []);
 
     return (
         <>
-            <Button variant="primary" onClick={handleShow}>Add Items</Button>
-            <div className="cardcon">
-            {
-                itemscon.items.length > 0 &&
-                itemscon.items.map((item) => {
-                    
-                    return (
-                        <>
+            <div className="butttonnnsss">
 
-                <Card className="cardcon" style={{ width: '18rem' }}>
-                    <Card.Img variant="top" src={item.itemImg} />
-                    <Card.Body>
-                        {/* <Card.Text>
-                            {item.itemName}
-                        </Card.Text> */}
-                        
-                        {/* <Card.Text>
-                        {item.itemDescreption}
-                        </Card.Text>
-                    // </Card.Body>
-                    {
-                        item.itemPrice
-                    }
-                    <Card.Body> */}
-                    {/* <Button onClick={()=>{
-                  
-                    console.log(1)
-                    }}> Details</Button> */}
-                    {/* <Button onClick={() => setPopShow(true)}>Show Details</Button>;
-                    <Alert variant="danger" onClose={() => setPopShow(false)} dismissible>
-                 <Alert.Heading>Oh snap! You got an error!</Alert.Heading>
-                    <p>
-                 Change this and that and try again. Duis mollis, est non commodo
-                 luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit.
-                 Cras mattis consectetur purus sit amet fermentum.
-                </p>
-                </Alert> */}
-
-                    <Popup  trigger={<Button> Details</Button>} position="right center">
-                        
-                    <div>Item content here</div>
-                    {/* <br/> */}
-                    <div className="details">
-
-                    
-                    <p> {
-                        `item Name : ${item.itemName}`
-                    }</p>
-                    <img  src={item.itemImg} style={{height:"200px", width:"200px"}}/>
-                    {/* <br/> */}
-                    <p >
-                       {`item itemDescreption : ${item.itemDescreption}`}
-                    </p>
-                    {/* <br/> */}
-                    <p >
-                        {`item price : ${item.itemPrice}`}
-                    </p>
-                    </div>
-                    </Popup>
-                    {/* <Button onClick={(e)=>{
-                        e.preventDefault();
-                        itemscon.setFavoriteItems(item)
-                    }}>
-                        Add to favourite
-                    </Button> */}
-
-                  <When condition={ item.userId === cookie.load('id')}>
-                    <Link to={`update/${item.id}`}>
-                    <Button>
-                        Update
-                    </Button>
-                    </Link>
-                    <Button onClick={()=>{itemscon.deleteItem(item.id)}}>
-                        Delete 
-                    </Button>
-                  </When>
-
-                    </Card.Body>
-                </Card>
-                </>
-                    )
-                })
-            }
             </div>
-            <Modal show={show} onHide={handleClose} class="modal-dialog modal-lg">
+            <div className="cardcon">
+                {
+                    itemscon.items.length > 0 &&
+                    itemscon.items.map((item) => {
+
+                        return (
+                            <>
+
+
+                                <Card className="cardcon" style={{ width: '20rem' }}>
+                                    <Card.Img variant="top" src={item.itemImg} />
+                                    <Card.Body>
+                                        <Popup className="pop-up-class" trigger={<Button style={{ marginRight: "3.5%" }}> Details</Button>} position="right center">
+                                            {/* <br/> */}
+                                            <div className="details">
+
+                                                <p style={{ margin: "20px 0 0  0" }}> {
+                                                    `Name : ${item.itemName}`
+                                                }</p>
+                                                <img src={item.itemImg} style={{ height: "200px", width: "200px" }} />
+                                                {/* <br/> */}
+                                                <p >
+                                                    {`Descreption : ${item.itemDescreption}`}
+                                                </p>
+                                                <hr />
+
+                                                {/* <br/> */}
+                                                <p >
+                                                    {`price : ${item.itemPrice}`}
+                                                </p>
+                                                <hr />
+
+                                                <p>
+
+                                                    {commentcon.content.map((ele) => {
+                                                        return (
+                                                            <>
+                                                                <p>
+                                                                    <span>
+                                                                        user :  {ele.userName} </span>
+
+                                                                    <span>comments :{ele.commentContent}</span>
+                                                                    <When condition={ele.userId === cookie.load('id')}>
+
+                                                                        <Button onClick={() => {
+                                                                            commentcon.deleteComment(ele.id)
+                                                                        }} variant="danger">
+                                                                            Delete comment
+                                                                        </Button>
+                                                                    </When>
+                                                                </p>
+                                                            </>
+                                                        )
+                                                    })}
+                                                </p>
+
+                                            </div>
+                                        </Popup>
+                                        <Button onClick={
+                                            () => {
+                                                favcon.addFavItem(item)
+                                            }
+                                        }>
+                                            Add to favourite
+                                        </Button>
+
+                                        <Button onClick={() => {
+                                            cartcon.addCartItem(item)
+                                        }} style={{ margin: "2.5% 2.5% 2.5% 0" }} >
+                                            Add to cart
+                                        </Button>
+                                        <When condition={item.userId === cookie.load('id')}>
+                                            <Link to={`update/${item.id}`}>
+                                                <Button style={{ margin: "2%  3% 0 0" }}>
+                                                    Update
+                                                </Button>
+                                            </Link>
+                                            <Button onClick={() => { itemscon.deleteItem(item.id) }}>
+                                                Delete
+                                            </Button>
+                                        </When>
+
+                                    </Card.Body>
+                                    <Card.Footer>
+                                        <input type="text" placeholder="write comment" onChange={
+                                            (e) => {
+                                                e.preventDefault();
+                                                commentcon.setComments(e.target.value)
+                                            }
+                                        } />
+                                        <Button onClick={() => {
+                                            commentcon.setItemId(item.id)
+                                            commentcon.addComment()
+
+                                        }}>Comment</Button>
+                                    </Card.Footer>
+                                </Card>
+                            </>
+                        )
+                    })
+                }
+            </div>
+            <Modal show={itemscon.show} onHide={itemscon.handleClose} class="modal-dialog modal-lg">
                 <Modal.Header closeButton>
                     <Modal.Title style={{ color: "#005240" }}>
                         Add Item
@@ -178,6 +209,7 @@ export default function Items(props) {
                                 type="number"
                                 required
                             />
+
                             <Button color="success" type="submit" style={{ marginTop: "20px" }}>
                                 Add Item
                             </Button>
@@ -189,3 +221,4 @@ export default function Items(props) {
     )
 
 }
+

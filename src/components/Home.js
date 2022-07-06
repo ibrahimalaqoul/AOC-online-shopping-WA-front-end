@@ -6,9 +6,9 @@ import { ItemContext } from "../context/items";
 import {AuthContext} from "../context/Auth";
 import Header from "./Header/Header";
 import Footer from "./Footer/Footer";
-import { Button } from "react-bootstrap";
-import Popup from 'reactjs-popup';
 import 'reactjs-popup/dist/index.css';
+import { Button } from "react-bootstrap";
+import {Link} from "react-router-dom";
    
 export default function Home(){
     const auth = useContext(AuthContext) 
@@ -23,11 +23,13 @@ return(
 <When condition={auth.isLoggedIn}>
 <Header/>
 </When>
+
 <div>
     <When condition={auth.isLoggedIn}>
     <Items/>
     </When>
  <SignIn/>
+
 </div>
 <When condition={auth.isLoggedIn}>
 <Footer/>
